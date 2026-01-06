@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>German Tailors</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <h2>German Tailors</h2>
+    <p>Since 1992</p>
+  </aside>
+
+  <main class="main">
+
+    <input id="searchInput" placeholder="Search customer..." />
+
+    <div class="card">
+      <h3>Add / Update Customer</h3>
+
+      <!-- BASIC INFO -->
+      <div class="form-grid">
+        <input id="name" placeholder="Customer Name">
+        <input id="mobile" placeholder="Mobile">
+        <input id="address" placeholder="Address">
+      </div>
+
+      <!-- MEASUREMENTS -->
+      <div class="form-grid">
+        <input id="length" placeholder="Length">
+        <input id="sleeves" placeholder="Sleeves">
+        <input id="shoulder" placeholder="Shoulder">
+        <input id="neck" placeholder="Neck">
+        <input id="chest" placeholder="Chest">
+        <input id="waist" placeholder="Waist">
+        <input id="hip" placeholder="Hip">
+        <input id="trouserLength" placeholder="Trouser Length">
+        <input id="trouserBottom" placeholder="Trouser Bottom">
+        <input id="cuff" placeholder="Cuff Size">
+        <input id="shoulderSize" placeholder="Shoulder Size">
+      </div>
+
+      <!-- CHECKBOXES -->
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="ban"> Ban</label>
+        <label><input type="checkbox" id="collar"> Collar</label>
+        <label><input type="checkbox" id="roundDaman"> Round Daman</label>
+        <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
+      </div>
+
+      <textarea id="notes" placeholder="Additional Information"></textarea>
+
+      <button id="saveBtn">Save / Update</button>
+    </div>
+
+    <div class="card">
+      <h3>Customer Records</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Sr</th>
+            <th>Name</th>
+            <th>Mobile</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="customerTable"></tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<button id="modeToggle" class="mode-toggle">🌙</button>
+
+<!-- ⚠️ DEFER IS CRITICAL -->
+<script src="app.js" defer></script>
+</body>
+</html>
