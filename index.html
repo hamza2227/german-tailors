@@ -79,7 +79,31 @@
 <!-- <button id="modeToggle" class="mode-toggle">🌙</button> -->
 
 <!-- ⚠️ DEFER IS CRITICAL -->
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Paste your firebaseConfig here
+  const firebaseConfig = {
+    apiKey: "AIzaSyDv1xckG_xaDDj_nO7a_gzcJmO-TAi2KPg",
+    authDomain: "german-tailors.firebaseapp.com",
+    projectId: "german-tailors",
+    storageBucket: "german-tailors.firebasestorage.app",
+    messagingSenderId: "338716434722",
+    appId: "1:338716434722:web:5ccc8398c8bcd9a7ef857b",
+    measurementId: "G-ZCG69WE1XZ"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+
+  
 <script src="app.js" defer></script>
 </body>
 </html>
+
 
