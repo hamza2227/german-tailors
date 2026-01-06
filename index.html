@@ -4,22 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>German Tailors | Since 1992</title>
-<style>
-/* --- MOBILE-FIRST STYLING --- */
-body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f8f8f8; }
-header { background:#003366; color:white; text-align:center; padding:15px; }
-.container { padding:15px; max-width:1200px; margin:auto; }
-input, select, textarea { width:100%; padding:10px; margin:5px 0; box-sizing:border-box; border-radius:5px; border:1px solid #ccc; }
-button { padding:10px 15px; border:none; border-radius:5px; background:#003366; color:white; cursor:pointer; }
-button:hover { background:#0055aa; }
-table { width:100%; border-collapse:collapse; margin-top:10px; overflow-x:auto; display:block; }
-table th, table td { padding:8px; border:1px solid #ccc; text-align:left; }
-table th { background:#003366; color:white; }
-@media(min-width:768px){
-  input, select, textarea { width:48%; display:inline-block; margin-right:2%; }
-  input:last-child, textarea:last-child { margin-right:0; }
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -30,32 +15,46 @@ table th { background:#003366; color:white; }
 
 <div class="container">
 
-<h2>Add / Edit Customer</h2>
+<h2>Customer Info</h2>
 <input id="name" placeholder="Customer Name">
 <input id="mobile" placeholder="Mobile Number">
 <input id="address" placeholder="Address">
 
-<!-- Measurement Fields -->
-<input id="length" placeholder="Length">
-<input id="sleeves" placeholder="Sleeves">
-<input id="shoulder" placeholder="Shoulder">
-<input id="neck" placeholder="Neck">
-<input id="chest" placeholder="Chest">
-<input id="waist" placeholder="Waist">
-<input id="hip" placeholder="Hip">
-<input id="trouserLength" placeholder="Trouser Length">
-<input id="trouserBottom" placeholder="Trouser Bottom">
-<input id="cuff" placeholder="Cuff Size">
-<input id="shoulderSize" placeholder="Shoulder Size">
-<textarea id="notes" placeholder="Additional Information"></textarea>
+<!-- COLLAPSIBLE SECTIONS FOR MEASUREMENTS -->
+<button type="button" class="collapsible">Upper Body Measurements</button>
+<div class="content">
+  <div class="grid-3">
+    <input id="length" placeholder="Length">
+    <input id="sleeves" placeholder="Sleeves">
+    <input id="shoulder" placeholder="Shoulder">
+    <input id="neck" placeholder="Neck">
+    <input id="chest" placeholder="Chest">
+    <input id="waist" placeholder="Waist">
+    <input id="hip" placeholder="Hip">
+  </div>
+</div>
 
-<!-- Checkboxes -->
+<button type="button" class="collapsible">Lower Body Measurements</button>
+<div class="content">
+  <div class="grid-2">
+    <input id="trouserLength" placeholder="Trouser Length">
+    <input id="trouserBottom" placeholder="Trouser Bottom">
+    <input id="cuff" placeholder="Cuff Size">
+    <input id="shoulderSize" placeholder="Shoulder Size">
+  </div>
+</div>
+
+<!-- OPTIONS -->
+<h3>Options</h3>
 <label><input type="checkbox" id="ban"> Ban / Collar</label>
 <label><input type="checkbox" id="collar"> Collar</label>
 <label><input type="checkbox" id="roundDaman"> Round Daman</label>
 <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
 
-<br>
+<!-- ADDITIONAL NOTES -->
+<textarea id="notes" placeholder="Additional Information"></textarea>
+
+<!-- SAVE BUTTON -->
 <button id="saveBtn">Save Customer</button>
 
 <h2>Search Customers</h2>
@@ -74,7 +73,7 @@ table th { background:#003366; color:white; }
   <tbody></tbody>
 </table>
 
-<!-- Firebase SDK -->
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -94,5 +93,19 @@ table th { background:#003366; color:white; }
 
 <script src="app.js"></script>
 </div>
+
+<script>
+// COLLAPSIBLE LOGIC
+const coll = document.getElementsByClassName("collapsible");
+for (let i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    const content = this.nextElementSibling;
+    if (content.style.display === "block") content.style.display = "none";
+    else content.style.display = "block";
+  });
+}
+</script>
+
 </body>
 </html>
