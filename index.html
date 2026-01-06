@@ -1,91 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>German Tailors</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German Tailors | Since 1992</title>
+<style>
+/* --- MOBILE-FIRST STYLING --- */
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f8f8f8; }
+header { background:#003366; color:white; text-align:center; padding:15px; }
+.container { padding:15px; max-width:1200px; margin:auto; }
+input, select, textarea { width:100%; padding:10px; margin:5px 0; box-sizing:border-box; border-radius:5px; border:1px solid #ccc; }
+button { padding:10px 15px; border:none; border-radius:5px; background:#003366; color:white; cursor:pointer; }
+button:hover { background:#0055aa; }
+table { width:100%; border-collapse:collapse; margin-top:10px; overflow-x:auto; display:block; }
+table th, table td { padding:8px; border:1px solid #ccc; text-align:left; }
+table th { background:#003366; color:white; }
+@media(min-width:768px){
+  input, select, textarea { width:48%; display:inline-block; margin-right:2%; }
+  input:last-child, textarea:last-child { margin-right:0; }
+}
+</style>
 </head>
-
 <body>
 
-<div class="app">
+<header>
+  <h1>German Tailors</h1>
+  <p>Since 1992</p>
+</header>
 
-  <aside class="sidebar">
-    <h2>German Tailors</h2>
-    <p>Since 1992</p>
-  </aside>
+<div class="container">
 
-  <main class="main">
+<h2>Add / Edit Customer</h2>
+<input id="name" placeholder="Customer Name">
+<input id="mobile" placeholder="Mobile Number">
+<input id="address" placeholder="Address">
 
-    <input id="searchInput" placeholder="Search customer..." />
+<!-- Measurement Fields -->
+<input id="length" placeholder="Length">
+<input id="sleeves" placeholder="Sleeves">
+<input id="shoulder" placeholder="Shoulder">
+<input id="neck" placeholder="Neck">
+<input id="chest" placeholder="Chest">
+<input id="waist" placeholder="Waist">
+<input id="hip" placeholder="Hip">
+<input id="trouserLength" placeholder="Trouser Length">
+<input id="trouserBottom" placeholder="Trouser Bottom">
+<input id="cuff" placeholder="Cuff Size">
+<input id="shoulderSize" placeholder="Shoulder Size">
+<textarea id="notes" placeholder="Additional Information"></textarea>
 
-    <div class="card">
-      <h3>Add / Update Customer</h3>
+<!-- Checkboxes -->
+<label><input type="checkbox" id="ban"> Ban / Collar</label>
+<label><input type="checkbox" id="collar"> Collar</label>
+<label><input type="checkbox" id="roundDaman"> Round Daman</label>
+<label><input type="checkbox" id="straightDaman"> Straight Daman</label>
 
-      <!-- BASIC INFO -->
-      <div class="form-grid">
-        <input id="name" placeholder="Customer Name">
-        <input id="mobile" placeholder="Mobile">
-        <input id="address" placeholder="Address">
-      </div>
+<br>
+<button id="saveBtn">Save Customer</button>
 
-      <!-- MEASUREMENTS -->
-      <div class="form-grid">
-        <input id="length" placeholder="Length">
-        <input id="sleeves" placeholder="Sleeves">
-        <input id="shoulder" placeholder="Shoulder">
-        <input id="neck" placeholder="Neck">
-        <input id="chest" placeholder="Chest">
-        <input id="waist" placeholder="Waist">
-        <input id="hip" placeholder="Hip">
-        <input id="trouserLength" placeholder="Trouser Length">
-        <input id="trouserBottom" placeholder="Trouser Bottom">
-        <input id="cuff" placeholder="Cuff Size">
-        <input id="shoulderSize" placeholder="Shoulder Size">
-      </div>
+<h2>Search Customers</h2>
+<input id="searchInput" placeholder="Search by Name, Mobile, Address or Notes">
 
-      <!-- CHECKBOXES -->
-      <div class="checkbox-group">
-        <label><input type="checkbox" id="ban"> Ban</label>
-        <label><input type="checkbox" id="collar"> Collar</label>
-        <label><input type="checkbox" id="roundDaman"> Round Daman</label>
-        <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
-      </div>
-
-      <textarea id="notes" placeholder="Additional Information"></textarea>
-
-      <button id="saveBtn">Save / Update</button>
-    </div>
-
-    <div class="card">
-      <h3>Customer Records</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Sr</th>
-            <th>Name</th>
-            <th>Mobile</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="customerTable"></tbody>
-      </table>
-    </div>
-
-  </main>
-</div>
-
-<!-- <button id="modeToggle" class="mode-toggle">🌙</button> -->
-
-<!-- ⚠️ DEFER IS CRITICAL -->
+<h2>Customer List</h2>
+<table id="customerTable">
+  <thead>
+    <tr>
+      <th>Sr</th>
+      <th>Name</th>
+      <th>Mobile</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Paste your firebaseConfig here
   const firebaseConfig = {
     apiKey: "AIzaSyDv1xckG_xaDDj_nO7a_gzcJmO-TAi2KPg",
     authDomain: "german-tailors.firebaseapp.com",
@@ -95,15 +88,11 @@
     appId: "1:338716434722:web:5ccc8398c8bcd9a7ef857b",
     measurementId: "G-ZCG69WE1XZ"
   };
-
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 </script>
 
-  
-<script src="app.js" defer></script>
+<script src="app.js"></script>
+</div>
 </body>
 </html>
-
-
