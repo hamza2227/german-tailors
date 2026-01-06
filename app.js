@@ -1,86 +1,105 @@
-let customers = JSON.parse(localStorage.getItem("customers")) || [];
-let selectedIndex = null;
+// ----------- VARIABLES ----------
+let selectedId = null;
 
+// Field IDs
 const fields = [
   "name","mobile","address","length","sleeves","shoulder","neck",
   "chest","waist","hip","trouserLength","trouserBottom",
   "cuff","shoulderSize","notes"
 ];
 
-function saveCustomer() {
+const banCheckbox = document.getElementById("ban");
+const collarCheckbox = document.getElementById("collar");
+const roundDamanCheckbox = document.getElementById("roundDaman");
+const straightDamanCheckbox = document.getElementById("straightDaman");
+const customerTable = document.getElementById("customerTable");
+
+// ----------- FUNCTIONS -----------
+
+async function saveCustomer() {
   let data = {};
   fields.forEach(f => data[f] = document.getElementById(f).value);
 
-  data.ban = ban.checked;
-  data.collar = collar.checked;
-  data.roundDaman = roundDaman.checked;
-  data.straightDaman = straightDaman.checked;
+  data.ban = banCheckbox.checked;
+  data.collar = collarCheckbox.checked;
+  data.roundDaman = roundDamanCheckbox.checked;
+  data.straightDaman = straightDamanCheckbox.checked;
 
-  if (selectedIndex !== null) {
-    customers[selectedIndex] = data;
+  if (selectedId) {
+    await db.collection("customers").doc(selectedId).set(data);
   } else {
-    customers.push(data);
+    await db.collection("customers").add(data);
   }
 
-  localStorage.setItem("customers", JSON.stringify(customers));
   resetForm();
-  renderTable();
+  loadCustomers();
 }
 
-function renderTable(list = customers) {
+async function loadCustomers() {
+  const snapshot = await db.collection("customers").get();
   customerTable.innerHTML = "";
-  list.forEach((c, i) => {
+  snapshot.forEach((doc, index) => {
+    const c = doc.data();
+    const id = doc.id;
     customerTable.innerHTML += `
-      <tr onclick="loadCustomer(${i})">
-        <td>${i+1}</td>
+      <tr onclick="loadCustomer('${id}')">
+        <td>${index+1}</td>
         <td>${c.name}</td>
         <td>${c.mobile}</td>
-        <td>
-          <button onclick="event.stopPropagation(); deleteCustomer(${i})">❌</button>
-        </td>
-      </tr>`;
+        <td><button onclick="event.stopPropagation(); deleteCustomer('${id}')">❌</button></td>
+      </tr>
+    `;
   });
 }
 
-function loadCustomer(i) {
-  selectedIndex = i;
-  let c = customers[i];
+async function loadCustomer(id) {
+  selectedId = id;
+  const doc = await db.collection("customers").doc(id).get();
+  const c = doc.data();
   fields.forEach(f => document.getElementById(f).value = c[f] || "");
-  ban.checked = c.ban;
-  collar.checked = c.collar;
-  roundDaman.checked = c.roundDaman;
-  straightDaman.checked = c.straightDaman;
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  banCheckbox.checked = c.ban;
+  collarCheckbox.checked = c.collar;
+  roundDamanCheckbox.checked = c.roundDaman;
+  straightDamanCheckbox.checked = c.straightDaman;
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
-function deleteCustomer(i) {
+async function deleteCustomer(id) {
   if (!confirm("Delete this customer?")) return;
-  customers.splice(i, 1);
-  localStorage.setItem("customers", JSON.stringify(customers));
-  renderTable();
+  await db.collection("customers").doc(id).delete();
+  loadCustomers();
 }
 
 function resetForm() {
+  selectedId = null;
   fields.forEach(f => document.getElementById(f).value = "");
-  ban.checked = collar.checked = roundDaman.checked = straightDaman.checked = false;
-  selectedIndex = null;
+  banCheckbox.checked = collarCheckbox.checked = roundDamanCheckbox.checked = straightDamanCheckbox.checked = false;
 }
 
-searchInput.addEventListener("input", () => {
-  const q = searchInput.value.toLowerCase();
-  renderTable(customers.filter(c =>
-    Object.values(c).join(" ").toLowerCase().includes(q)
-  ));
+// SEARCH FUNCTION
+document.getElementById("searchInput").addEventListener("input", async () => {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const snapshot = await db.collection("customers").get();
+  customerTable.innerHTML = "";
+  snapshot.forEach((doc, index) => {
+    const c = doc.data();
+    const id = doc.id;
+    const combined = Object.values(c).join(" ").toLowerCase();
+    if (combined.includes(q)) {
+      customerTable.innerHTML += `
+        <tr onclick="loadCustomer('${id}')">
+          <td>${index+1}</td>
+          <td>${c.name}</td>
+          <td>${c.mobile}</td>
+          <td><button onclick="event.stopPropagation(); deleteCustomer('${id}')">❌</button></td>
+        </tr>
+      `;
+    }
+  });
 });
 
-saveBtn.onclick = saveCustomer;
-renderTable();
+// BUTTON
+document.getElementById("saveBtn").onclick = saveCustomer;
 
-/* 🌙 DAY / NIGHT */
-let dark = localStorage.getItem("dark") === "true";
-modeToggle.onclick = () => {
-  dark = !dark;
-  document.body.classList.toggle("dark", dark);
-  localStorage.setItem("dark", dark);
-};
-document.body.classList.toggle("dark", dark);
+// INITIAL LOAD
+loadCustomers();
