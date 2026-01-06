@@ -15,15 +15,18 @@
 
 <div class="container">
 
-<h2>Customer Info</h2>
-<input id="name" placeholder="Customer Name">
-<input id="mobile" placeholder="Mobile Number">
-<input id="address" placeholder="Address">
+<!-- CUSTOMER INFO CARD -->
+<div class="card">
+  <h2>Customer Info</h2>
+  <input id="name" placeholder="Customer Name">
+  <input id="mobile" placeholder="Mobile Number">
+  <input id="address" placeholder="Address">
+</div>
 
-<!-- COLLAPSIBLE SECTIONS FOR MEASUREMENTS -->
-<button type="button" class="collapsible">Upper Body Measurements</button>
-<div class="content">
-  <div class="grid-3">
+<!-- UPPER BODY MEASUREMENTS -->
+<div class="card">
+  <button type="button" class="collapsible">Upper Body Measurements</button>
+  <div class="content grid-3">
     <input id="length" placeholder="Length">
     <input id="sleeves" placeholder="Sleeves">
     <input id="shoulder" placeholder="Shoulder">
@@ -34,9 +37,10 @@
   </div>
 </div>
 
-<button type="button" class="collapsible">Lower Body Measurements</button>
-<div class="content">
-  <div class="grid-2">
+<!-- LOWER BODY MEASUREMENTS -->
+<div class="card">
+  <button type="button" class="collapsible">Lower Body Measurements</button>
+  <div class="content grid-2">
     <input id="trouserLength" placeholder="Trouser Length">
     <input id="trouserBottom" placeholder="Trouser Bottom">
     <input id="cuff" placeholder="Cuff Size">
@@ -45,22 +49,27 @@
 </div>
 
 <!-- OPTIONS -->
-<h3>Options</h3>
-<label><input type="checkbox" id="ban"> Ban / Collar</label>
-<label><input type="checkbox" id="collar"> Collar</label>
-<label><input type="checkbox" id="roundDaman"> Round Daman</label>
-<label><input type="checkbox" id="straightDaman"> Straight Daman</label>
+<div class="card checkbox-group">
+  <h2>Options</h2>
+  <label><input type="checkbox" id="ban"> Ban / Collar</label>
+  <label><input type="checkbox" id="collar"> Collar</label>
+  <label><input type="checkbox" id="roundDaman"> Round Daman</label>
+  <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
+</div>
 
-<!-- ADDITIONAL NOTES -->
-<textarea id="notes" placeholder="Additional Information"></textarea>
+<!-- NOTES -->
+<div class="card">
+  <h2>Additional Information</h2>
+  <textarea id="notes" placeholder="Notes about customer..."></textarea>
+</div>
 
 <!-- SAVE BUTTON -->
-<button id="saveBtn">Save Customer</button>
+<button id="saveBtn">💾 Save Customer</button>
 
-<h2>Search Customers</h2>
+<!-- SEARCH -->
 <input id="searchInput" placeholder="Search by Name, Mobile, Address or Notes">
 
-<h2>Customer List</h2>
+<!-- CUSTOMER TABLE -->
 <table id="customerTable">
   <thead>
     <tr>
@@ -92,7 +101,6 @@
 </script>
 
 <script src="app.js"></script>
-</div>
 
 <script>
 // COLLAPSIBLE LOGIC
@@ -107,5 +115,6 @@ for (let i = 0; i < coll.length; i++) {
 }
 </script>
 
+</div>
 </body>
 </html>
