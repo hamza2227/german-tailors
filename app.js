@@ -1,4 +1,6 @@
+// -------------------- VARIABLES --------------------
 let selectedId = null;
+
 const fields = [
   "name","mobile","address","length","sleeves","shoulder","neck",
   "chest","waist","hip","trouserLength","trouserBottom",
@@ -11,25 +13,32 @@ const roundDamanCheckbox = document.getElementById("roundDaman");
 const straightDamanCheckbox = document.getElementById("straightDaman");
 const customerTable = document.getElementById("customerTable").getElementsByTagName("tbody")[0];
 
-// SAVE / UPDATE
+// -------------------- SAVE / UPDATE CUSTOMER --------------------
 async function saveCustomer() {
   let data = {};
   fields.forEach(f => data[f] = document.getElementById(f).value);
+
   data.ban = banCheckbox.checked;
   data.collar = collarCheckbox.checked;
   data.roundDaman = roundDamanCheckbox.checked;
   data.straightDaman = straightDamanCheckbox.checked;
 
   try {
-    if (selectedId) await db.collection("customers").doc(selectedId).set(data);
-    else await db.collection("customers").add(data);
-    alert("Customer saved!");
+    if (selectedId) {
+      await db.collection("customers").doc(selectedId).set(data);
+    } else {
+      await db.collection("customers").add(data);
+    }
+    alert("Customer saved successfully!");
     resetForm();
     loadCustomers();
-  } catch (err) { console.error(err); alert("Error saving customer."); }
+  } catch (err) {
+    console.error("Error saving customer:", err);
+    alert("Error saving customer. Check console.");
+  }
 }
 
-// LOAD ALL CUSTOMERS
+// -------------------- LOAD ALL CUSTOMERS --------------------
 async function loadCustomers() {
   try {
     const snapshot = await db.collection("customers").get();
@@ -50,7 +59,7 @@ async function loadCustomers() {
   } catch (err) { console.error(err); }
 }
 
-// LOAD SINGLE CUSTOMER
+// -------------------- LOAD SINGLE CUSTOMER --------------------
 async function loadCustomer(id) {
   try {
     selectedId = id;
@@ -62,29 +71,33 @@ async function loadCustomer(id) {
     roundDamanCheckbox.checked = c.roundDaman||false;
     straightDamanCheckbox.checked = c.straightDaman||false;
 
-    // Open collapsibles automatically
-    const contents = document.getElementsByClassName("content");
-    for (let content of contents) content.style.display = "block";
+    // Auto-show first step (Customer Info)
+    document.querySelectorAll(".step-tab").forEach(tab => tab.classList.remove("active"));
+    document.querySelectorAll(".step-card").forEach(card => card.style.display="none");
+    document.querySelector(".step-tab[data-step='1']").classList.add("active");
+    document.querySelector(".step-card[data-step='1']").style.display="block";
 
     window.scrollTo({top:0, behavior:'smooth'});
   } catch (err) { console.error(err); }
 }
 
-// DELETE
+// -------------------- DELETE CUSTOMER --------------------
 async function deleteCustomer(id) {
-  if (!confirm("Delete this customer?")) return;
-  try { await db.collection("customers").doc(id).delete(); loadCustomers(); }
-  catch (err) { console.error(err); }
+  if(!confirm("Are you sure you want to delete this customer?")) return;
+  try {
+    await db.collection("customers").doc(id).delete();
+    loadCustomers();
+  } catch(err) { console.error(err); }
 }
 
-// RESET FORM
+// -------------------- RESET FORM --------------------
 function resetForm() {
   selectedId = null;
   fields.forEach(f => document.getElementById(f).value = "");
   banCheckbox.checked = collarCheckbox.checked = roundDamanCheckbox.checked = straightDamanCheckbox.checked = false;
 }
 
-// SEARCH
+// -------------------- SEARCH FUNCTION --------------------
 document.getElementById("searchInput").addEventListener("input", async () => {
   const q = document.getElementById("searchInput").value.toLowerCase();
   const snapshot = await db.collection("customers").get();
@@ -107,8 +120,8 @@ document.getElementById("searchInput").addEventListener("input", async () => {
   });
 });
 
-// BUTTON EVENTS
+// -------------------- BUTTON EVENTS --------------------
 document.getElementById("saveBtn").onclick = saveCustomer;
 
-// INITIAL LOAD
+// -------------------- INITIAL LOAD --------------------
 loadCustomers();
