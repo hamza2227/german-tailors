@@ -15,77 +15,84 @@
 
 <div class="container">
 
-<!-- CUSTOMER INFO CARD -->
-<div class="card">
-  <h2>Customer Info</h2>
-  <input id="name" placeholder="Customer Name">
-  <input id="mobile" placeholder="Mobile Number">
-  <input id="address" placeholder="Address">
-</div>
-
-<!-- UPPER BODY MEASUREMENTS -->
-<div class="card">
-  <button type="button" class="collapsible">Upper Body Measurements</button>
-  <div class="content grid-3">
-    <input id="length" placeholder="Length">
-    <input id="sleeves" placeholder="Sleeves">
-    <input id="shoulder" placeholder="Shoulder">
-    <input id="neck" placeholder="Neck">
-    <input id="chest" placeholder="Chest">
-    <input id="waist" placeholder="Waist">
-    <input id="hip" placeholder="Hip">
+  <!-- STEP TABS -->
+  <div class="step-tabs">
+    <div class="step-tab active" data-step="1">Customer Info</div>
+    <div class="step-tab" data-step="2">Upper Body</div>
+    <div class="step-tab" data-step="3">Lower Body</div>
+    <div class="step-tab" data-step="4">Options & Notes</div>
   </div>
-</div>
 
-<!-- LOWER BODY MEASUREMENTS -->
-<div class="card">
-  <button type="button" class="collapsible">Lower Body Measurements</button>
-  <div class="content grid-2">
-    <input id="trouserLength" placeholder="Trouser Length">
-    <input id="trouserBottom" placeholder="Trouser Bottom">
-    <input id="cuff" placeholder="Cuff Size">
-    <input id="shoulderSize" placeholder="Shoulder Size">
+  <!-- STEP 1: CUSTOMER INFO -->
+  <div class="card step-card" data-step="1">
+    <h2>Customer Info</h2>
+    <input id="name" placeholder="Customer Name">
+    <input id="mobile" placeholder="Mobile Number">
+    <input id="address" placeholder="Address">
   </div>
+
+  <!-- STEP 2: UPPER BODY -->
+  <div class="card step-card" data-step="2">
+    <h2>Upper Body Measurements</h2>
+    <div class="grid-3">
+      <input id="length" placeholder="Length">
+      <input id="sleeves" placeholder="Sleeves">
+      <input id="shoulder" placeholder="Shoulder">
+      <input id="neck" placeholder="Neck">
+      <input id="chest" placeholder="Chest">
+      <input id="waist" placeholder="Waist">
+      <input id="hip" placeholder="Hip">
+    </div>
+  </div>
+
+  <!-- STEP 3: LOWER BODY -->
+  <div class="card step-card" data-step="3">
+    <h2>Lower Body Measurements</h2>
+    <div class="grid-2">
+      <input id="trouserLength" placeholder="Trouser Length">
+      <input id="trouserBottom" placeholder="Trouser Bottom">
+      <input id="cuff" placeholder="Cuff Size">
+      <input id="shoulderSize" placeholder="Shoulder Size">
+    </div>
+  </div>
+
+  <!-- STEP 4: OPTIONS & NOTES -->
+  <div class="card step-card" data-step="4">
+    <h2>Options</h2>
+    <div class="checkbox-group">
+      <label><input type="checkbox" id="ban"> Ban / Collar</label>
+      <label><input type="checkbox" id="collar"> Collar</label>
+      <label><input type="checkbox" id="roundDaman"> Round Daman</label>
+      <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
+    </div>
+    <h2>Additional Information</h2>
+    <textarea id="notes" placeholder="Additional Notes..."></textarea>
+  </div>
+
+  <!-- SAVE BUTTON -->
+  <button id="saveBtn">💾 Save Customer</button>
+
+  <!-- SEARCH -->
+  <input id="searchInput" placeholder="Search by Name, Mobile, Address or Notes">
+
+  <!-- CUSTOMER TABLE -->
+  <table id="customerTable">
+    <thead>
+      <tr>
+        <th>Sr</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
 </div>
-
-<!-- OPTIONS -->
-<div class="card checkbox-group">
-  <h2>Options</h2>
-  <label><input type="checkbox" id="ban"> Ban / Collar</label>
-  <label><input type="checkbox" id="collar"> Collar</label>
-  <label><input type="checkbox" id="roundDaman"> Round Daman</label>
-  <label><input type="checkbox" id="straightDaman"> Straight Daman</label>
-</div>
-
-<!-- NOTES -->
-<div class="card">
-  <h2>Additional Information</h2>
-  <textarea id="notes" placeholder="Notes about customer..."></textarea>
-</div>
-
-<!-- SAVE BUTTON -->
-<button id="saveBtn">💾 Save Customer</button>
-
-<!-- SEARCH -->
-<input id="searchInput" placeholder="Search by Name, Mobile, Address or Notes">
-
-<!-- CUSTOMER TABLE -->
-<table id="customerTable">
-  <thead>
-    <tr>
-      <th>Sr</th>
-      <th>Name</th>
-      <th>Mobile</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
 
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyDv1xckG_xaDDj_nO7a_gzcJmO-TAi2KPg",
@@ -103,18 +110,23 @@
 <script src="app.js"></script>
 
 <script>
-// COLLAPSIBLE LOGIC
-const coll = document.getElementsByClassName("collapsible");
-for (let i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    const content = this.nextElementSibling;
-    if (content.style.display === "block") content.style.display = "none";
-    else content.style.display = "block";
-  });
-}
-</script>
+// STEP TABS LOGIC
+const stepTabs = document.querySelectorAll(".step-tab");
+const stepCards = document.querySelectorAll(".step-card");
 
-</div>
+stepTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const step = tab.dataset.step;
+    stepTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    stepCards.forEach(card => card.style.display = card.dataset.step === step ? "block" : "none");
+  });
+});
+
+// SHOW FIRST STEP ON LOAD
+window.addEventListener("load", () => {
+  stepCards.forEach(card => card.style.display = card.dataset.step === "1" ? "block" : "none");
+});
+</script>
 </body>
 </html>
